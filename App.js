@@ -22,7 +22,6 @@ class App extends React.Component {
         }else {
             this.setState({ result: 'Wrong'});
         }
-        console.log(this.state.number,this.state.term);
         this.setState({ count: this.state.count+1})
         if(parseInt(this.state.term) > this.state.number){
             this.setState({ hint: 'Your Last guess was high!'});
