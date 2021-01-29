@@ -2,11 +2,12 @@ import React from 'react';
 import CountDetail from './CountDetail';
 import Header from './Header';
 import './App.css';
+import store, { RESULT_SUCCESS, RESULT_WRONG } from './store';
 
 class App extends React.Component {
     constructor(props){
         super(props);
-        this.state = { number: '', term: '', result: '', count: 0, renderingCount: 'false', hint: ''};
+        this.state = { number: '', term: '', count: 0, renderingCount: 'false', hint: ''};
     }
     componentDidMount(){
         const num = Math.floor(Math.random() * 100) + 1;
@@ -16,11 +17,12 @@ class App extends React.Component {
     }
     checkRandomNumber = (e) => {
         if(parseInt(this.state.term) === this.state.number){
-            this.setState({ result: 'Congratulations! You got it right!', renderingCount: 'true'});
-        }else if(this.state.term === ''){
-            this.setState({ result: 'Give some Value'});
+            store.dispatch({ type: RESULT_SUCCESS });
+            this.setState({ renderingCount: 'true'});
+          //  this.setState({ result: 'Congratulations! You got it right!', renderingCount: 'true'});
         }else {
-            this.setState({ result: 'Wrong'});
+            store.dispatch({ type: RESULT_WRONG });
+           // this.setState({ result: 'Wrong'});
         }
         this.setState({ count: this.state.count+1})
         if(parseInt(this.state.term) > this.state.number){
@@ -42,10 +44,10 @@ class App extends React.Component {
             }
         }
         const changeColor = () => {
-            if(this.state.result === 'Wrong'){
-                return <h3 style={{ color: 'red'}}>{this.state.result}</h3>;
+            if(store.getState().result === 'Wrong'){
+                return <h3 style={{ color: 'red'}}>{store.getState().result}</h3>;
             }else{
-                return <h3 style={{ color: 'green'}}>{this.state.result}</h3>;
+                return <h3 style={{ color: 'green'}}>{store.getState().result}</h3>;
             }
         }
         return(
